@@ -14,13 +14,19 @@ namespace OMP.Model
         public List<Set> Sets;
         public string RedTeam;
         public string BlueTeam;
+        public int RedScore;
+        public int BlueScore;
+        public string MatchID;
 
-        public Match(string blueTeam, string redTeam)
+        public Match(string blueTeam, string redTeam, string matchID)
         {
             this.Maps = new List<MatchMap>();
             this.Sets = new List<Set>();
             this.RedTeam = redTeam;
             this.BlueTeam = blueTeam;
+            this.RedScore = 0;
+            this.BlueScore = 0;
+            this.MatchID = matchID;
         }
 
         public void FillMaps(JArray matchJSON)
@@ -76,6 +82,16 @@ namespace OMP.Model
                     }
                     if(set.BlueScore == 4 || set.RedScore == 4)
                     {
+                        if (set.BlueScore == 4)
+                        {
+                            set.Winner = Team.Blue;
+                            this.BlueScore++;
+                        }
+                        else
+                        {
+                            set.Winner = Team.Red;
+                            this.RedScore++;
+                        }
                         Sets.Add(set);
                         set = new Set();
                     }

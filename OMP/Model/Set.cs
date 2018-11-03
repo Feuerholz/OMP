@@ -10,6 +10,7 @@ namespace OMP.Model
     {
         public int BlueScore;
         public int RedScore;
+        public Team Winner;
 
         public Set()
         {
