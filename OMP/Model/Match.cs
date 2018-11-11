@@ -29,6 +29,17 @@ namespace OMP.Model
             this.MatchID = matchID;
         }
 
+        public Match(string matchID)
+        {
+            this.Maps = new List<MatchMap>();
+            this.Sets = new List<Set>();
+            this.RedTeam = "defaultRed";
+            this.BlueTeam = "defaultBlue";
+            this.RedScore = 0;
+            this.BlueScore = 0;
+            this.MatchID = matchID;
+        }
+
         public void FillMaps(JArray matchJSON)
         {
             Set set = new Set();
@@ -42,16 +53,17 @@ namespace OMP.Model
                     JArray scoreArray = (JArray)matchJSON[i]["scores"];
                     for (int k = 0; k < scoreArray.Count; k++)
                     {
+                        string playerID = scoreArray[k]["user_id"].ToString();
                         int score = Int32.Parse(scoreArray[k]["score"].ToString());
                         if (scoreArray[k]["team"].ToString().Equals("1"))
                         {
                             if(scoreArray[k]["pass"].ToString().Equals("0"))
                             {                               
-                                map.AddScore(new PlayerScore(score, Team.Blue, false));
+                                map.AddScore(new PlayerScore(playerID, score, Team.Blue, false));
                             }
                             else
                             {
-                                map.AddScore(new PlayerScore(score, Team.Blue, true));
+                                map.AddScore(new PlayerScore(playerID, score, Team.Blue, true));
                             }
                         }
 
@@ -59,11 +71,11 @@ namespace OMP.Model
                         {
                             if (scoreArray[k]["pass"].ToString().Equals("0"))
                             {
-                                map.AddScore(new PlayerScore(score, Team.Red, false));
+                                map.AddScore(new PlayerScore(playerID, score, Team.Red, false));
                             }
                             else
                             {
-                                map.AddScore(new PlayerScore(score, Team.Red, true));
+                                map.AddScore(new PlayerScore(playerID, score, Team.Red, true));
                             }
                         }
                     }
